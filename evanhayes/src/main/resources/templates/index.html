@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+<div th:replace="fragments :: bg_image"></div>
+<nav th:replace="fragments :: navigation"></nav>
+
+<div th:each="category : ${categories}" class="btn-group" style="margin-top: 5px; margin-bottom: 5px;">
+    <a th:href="${category.id}" ><button th:text="${category.category}" class="btn btn-light"></button></a>
+</div>
+
+<div class="demo">
+    <ul id="lightSlider" >
+        <li th:each="image : ${images}" th:attr="data-thumb=@{${image.path}}" class="caroselpics">
+            <img th:src="@{${image.path}}" />
+        </li>
+    </ul>
+</div>
+<script>
+    $('#lightSlider').lightSlider({
+    thumbItem: 5,
+    gallery: true,
+    item: 1,
+    loop: true,
+    slideMargin: 0,
+    controls: true,
+    prevHtml: '',
+    nextHtml: '',
+    adaptiveHeight: true,
+    currentPagerPosition:'left'
+});
+</script>
+
+</body>
+</html>

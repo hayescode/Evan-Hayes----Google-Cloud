@@ -1,0 +1,90 @@
+.error {
+    color: red;
+}
+
+body {
+  font-family: Arial;
+  margin: 0;
+  /*background-image: url("https://www.desktopbackground.org/p/2015/08/04/989748_baby-blue-background-oqce_3888x2592_h.jpg");*/
+  background-image: url("https://wallpapertag.com/wallpaper/full/3/e/1/846383-amazing-blue-desktop-background-1920x1200-for-mobile-hd.jpg");
+  /*background-image: url("../images/site/blue_t.jpg")*/
+}
+
+bg_image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-image: url("../images/site/Black_Wood_Background.png");
+}
+
+.shadow {
+    -webkit-box-shadow: inset 0px 0px 16px 6px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 16px 6px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 16px 6px rgba(0,0,0,0.75);
+}
+
+#logout_button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+.navbar {
+    background:transparent;
+    border-radius: 10px;
+}
+
+hr {
+    /*display: block;*/
+
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid black;
+    margin: 1em 0;
+    padding: 1em;
+    clear: both;
+    width: 50%;
+}
+
+.label {
+    color: black;
+}
+
+.form-container {
+    margin-top: .5em;
+    clear: both;
+    float: left;
+    width: 50%;
+}
+
+.demo {
+    width:57%;
+    float: center;
+    margin: auto;
+}
+#lightSlider {
+    list-style: none outside none;
+    padding-left: 0;
+    margin-bottom:0;
+}
+.caroselpics {
+    display: block;
+    float: left;
+    margin-right: 6px;
+    cursor:pointer;
+}
+img {
+    display: block;
+    height: auto;
+    height: 480px;
+    margin: auto;
+    max-width: 100%;
+}
+
+.pic_categories {
+    display: flex;
+    flex-wrap: wrap;
+}

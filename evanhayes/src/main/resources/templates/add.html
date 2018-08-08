@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+    <nav th:replace="fragments :: navigation"></nav>
+
+    <form method="POST" enctype="multipart/form-data" class="form-container">
+        <div class="form-group">
+            <h4 class="label">Add New Images</h4>
+            <input type="file" class="form-control"name = "files" placeholder="Select Image" multiple/>
+            <small class="label" style="color:black;">Browse to the image you would like to upload.</small>
+            <br>
+            <label class="label">Select Category</label>
+            <select name="category">
+                <option th:each="category : ${categories}" th:text="${category.category}" th:value="${category.id}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload Image</button>
+    </form>
+    <hr>
+    <form method="POST" action="/add_category" class="form-container">
+        <div class="form-group">
+            <h4 class="label">Add New Category</h4>
+            <input type="text" class="form-control" name="category" placeholder="Type New Category Name" />
+            <button style="color:white;" type="submit" class="btn btn-primary">Add New Category</button>
+        </div>
+    </form>
+</body>
+</html>
