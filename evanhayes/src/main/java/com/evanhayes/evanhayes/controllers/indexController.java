@@ -1,6 +1,7 @@
 package com.evanhayes.evanhayes.controllers;
 
 import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.evanhayes.evanhayes.Security.SecurityService;
@@ -13,6 +14,7 @@ import com.evanhayes.evanhayes.models.Data.UserRepository;
 import com.evanhayes.evanhayes.models.Forms.LoginForm;
 import com.evanhayes.evanhayes.models.Images.Images;
 import com.evanhayes.evanhayes.models.Images.RotateImage;
+import com.evanhayes.evanhayes.models.Images.fileImages;
 import com.evanhayes.evanhayes.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +31,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -99,56 +102,15 @@ public class indexController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(@RequestParam("files")MultipartFile[] files,
-                             @RequestParam("category") int categoryId) {
+                             @RequestParam("category") int categoryId) throws ImageProcessingException, IOException {
         for(MultipartFile eachFile : files) {
-            //Add each file to the file system
+            //Add each file to AWS bucket
             String fileName = eachFile.getOriginalFilename();
-            try {
-                if (!eachFile.isEmpty()) {
-                    //convert Multipart to file in order to get metadata
-                    File convFile = new File(eachFile.getOriginalFilename());
-                    convFile.createNewFile();
-                    FileOutputStream fos = new FileOutputStream(convFile);
-                    fos.write(eachFile.getBytes());
-                    fos.close();
-
-                    BufferedImage src = ImageIO.read(new ByteArrayInputStream(eachFile.getBytes()));
-
-                    //get metadata, specifically orientation
-                    Metadata metadata = ImageMetadataReader.readMetadata(convFile);
-                    ExifIFD0Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
-
-                    int orientation = 1;
-                    try {
-                        orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    int width = src.getWidth();
-                    int height = src.getHeight();
-                    if (orientation == 3 || orientation == 6 || orientation == 8) {
-                        AffineTransform affineTransform = RotateImage.getTransform(orientation, width, height);
-                        AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
-                        BufferedImage destinationImage = new BufferedImage(height, width, src.getType());
-                        destinationImage = affineTransformOp.filter(src, destinationImage);
-                        ImageIO.write(destinationImage, "jpg", new File("jvm/apache-tomcat-8.5.23/domains/evanhayes.com/ROOT/WEB-INF/classes/static/images/" + fileName));
-                        destinationImage.flush();
-                        convFile.delete();
-                        src.flush();
-                    } else {
-                        ImageIO.write(src, "jpg", new File("jvm/apache-tomcat-8.5.23/domains/evanhayes.com/ROOT/WEB-INF/classes/static/images/" + fileName));
-                        convFile.delete();
-                        src.flush();
-                    }
-                    convFile.delete();
-                    src.flush();
-                }
-            } catch (Exception e) {
-                System.out.println("Exception occured" + e.getMessage());
-            }
+            String ext = eachFile.getOriginalFilename().split("\\.")[1];
+            BufferedImage image = fileImages.autoRotate(eachFile);
+            String path = fileImages.uploadImage(image, fileName, ext);
 
             //Add file to SQL database (table = images)
-            String path = "/images/" + fileName;
             Images newImage = new Images(path);
             Optional<Category> oCat = categoryDAO.findById(categoryId);
             Category cat = oCat.get();

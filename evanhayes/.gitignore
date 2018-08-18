@@ -25,3 +25,4 @@
 /.nb-gradle/
 /src/main/resources/application.properties
 /src/main/resources/static/images/
+/src/main/java/com/evanhayes/evanhayes/models/Images/s3client.java

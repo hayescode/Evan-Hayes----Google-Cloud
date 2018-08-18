@@ -6,7 +6,7 @@
 	<groupId>com.evan-hayes</groupId>
 	<artifactId>evan-hayes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>evan-hayes</name>
 	<description>Google Cloud Hosting</description>
@@ -69,6 +69,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.327</version>
 		</dependency>
 	</dependencies>
 
